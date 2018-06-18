@@ -16,9 +16,6 @@ metadata {
 		capability "Sensor"
         
 		attribute "about", "string"
-
-		main "switch_on"
-		details(["switch_on, switch_off"])
 	}
 
 	// simulator metadata
@@ -27,9 +24,22 @@ metadata {
 
 	tiles(scale: 2) {
 		standardTile(name: "switch_on", type: "generic", width: 2, height: 2) {
-			action: switch.on
+			label: 'On', action: "on"
 		}
 		standardTile(name: "switch_off", type: "generic", width: 2, height: 2) {
-			action: switch.off
+			label: 'Off', action: "off"
 		}
+		main "switch_on"
+		details(["switch_on, switch_off"])
 	}
+}
+
+def on() {
+	log.debug "---ON COMMAND---"
+}
+
+def off() {
+	log.debug "---ON COMMAND---"
+}
+
+def push() {}
