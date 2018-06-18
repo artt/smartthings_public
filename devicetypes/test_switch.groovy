@@ -1,11 +1,4 @@
-preferences {    
-	section("Internal Access"){
-		input "id_pw", "text", title: "ID & PW for RM Plugin or RM Bridge(Optional)", required: false
-		input "internal_ip", "text", title: "IP for RM Plugin or RM Bridge or HA(Required for all)", required: true
-		input "internal_port", "text", title: "Port(Required for all)", required: true
-		input "internal_on_path", "text", title: "On Path(Required for all)", required: true
-        input "internal_off_path", "text", title: "Off Path", required: false
-	}
+preferences {
 }
 
 metadata {
@@ -16,30 +9,41 @@ metadata {
 		capability "Sensor"
         
 		attribute "about", "string"
+        attribute "xxx", "string"
 	}
 
 	// simulator metadata
 	simulator {
 	}
-
+ 
 	tiles(scale: 2) {
-		standardTile(name: "switch_on", type: "generic", width: 2, height: 2) {
-			label: 'On', action: "on"
+    	standardTile(name: "toggle", type: "device.switch", width: 4, height: 4, canChangeIcon: true, canChangeBackground: true) {
+			state "off", label: 'Off', action: "on", icon: "st.switches.switch.off", backgroundColor: "#ffffff", nextState: "on"
+			state "on", label: 'On', action: "off", icon: "st.switches.switch.on", backgroundColor: "#00a0dc", nextState: "off"
 		}
-		standardTile(name: "switch_off", type: "generic", width: 2, height: 2) {
-			label: 'Off', action: "off"
+		standardTile(name: "switch_on", type: "device.xxx", width: 2, height: 2) {
+			state "normal", label: 'On', action: "on"
 		}
-		main "switch_on"
-		details(["switch_on, switch_off"])
+		standardTile(name: "switch_off", type: "device.xxx", width: 2, height: 2) {
+			state "normal", label: 'Off', action: "off"
+		}
+        valueTile(name: "value_tile", type: "device.switch", width: 2, height: 2) {
+        	state "val", label: '${name}', defaultState: true
+        }
+		main "toggle"
+		details(["toggle", "switch_on", "switch_off", "value_tile"])
 	}
+    
 }
 
 def on() {
 	log.debug "---ON COMMAND---"
+    sendEvent(name: "switch", value: "on", isStateChange: true, display: true)
 }
 
 def off() {
-	log.debug "---ON COMMAND---"
+	log.debug "---OFF COMMAND---"
+    sendEvent(name: "switch", value: "off", isStateChange: true, display: true)
 }
 
 def push() {}
